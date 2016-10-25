@@ -1,49 +1,34 @@
 <?php 
 	
-	$Dosyam="agri.txt"; /*Dosyayı seçiyorum agri.txt */
+    $Dosyam="agri.txt"; 
 
-    $DosyaAc = fopen($Dosyam, r); /*Dosyayı acıyorum.*/
+    $DosyaAc = fopen($Dosyam, r); 
 
-    $Oku = fread($DosyaAc,filesize($Dosyam)); /*Dosyayı okutuyorum. */
+    $Oku = fread($DosyaAc,filesize($Dosyam)); 
 
-    fclose($fopen); /*Okuma bittikten sonra kapatıyorum.*/
+    fclose($fopen); 
 
-    $sil = "\n"; /*Enter veya boşlukları sil*/
+    $sil = "\n"; 
 
-    $bol = explode($sil, $Oku);/*okuduğum yerleri bölüyorum */
+    $bol = explode($sil, $Oku);
 
-    $array[] = null; /*array tanımlıyorum*/
-    $tab = "\t";  /*tab*/
+    $array[] = null;
+    $tab = "\t"; 
 
-    foreach ($bol as $string) /* döngüye alıyorum dosyayı ve içerisinde bulunan posta kodu ile Hamur ilçesine ait köyleri listeliyorum.*/
+    foreach ($bol as $string) /* Dosya döngüye alınır ve içerisinde bulunan posta kodu ile Hamur ilçesine ait köyleri listelenir.*/
     {
-        $row = explode($tab, $string); /*değişkene atıyorum*/
-        array_push($array,$row); /*elemanları dizinin sonuna kadar ekliyorum*/
+        $row = explode($tab, $string); 
+        array_push($array,$row); 
 
-		if (in_array('04852', $row, true)) { /*bu aşamada posta kodu eğer iceriyorsa echo ile ekrana basıyorum veya sql kodu ile sql sistemine kaydediyorum.*/
+		if (in_array('04852', $row, true)) {
 			
 			echo '<pre>';
-				print_r($row); /*Ekrana dizi bastırıyorum ve sadece Hamur ilcesine ait bilgiler geliyor.*/
-			echo '</pre>';
-			/*
-				Eğer verileri tek tek veya hangi alanı listelemek istiyorsan 
-				şu şekilde bir işlem yapılabilir. 
-				
-				print_r($row[0]) //sadece sıfırıncı değer Ağrı yazdıracak toplamda 5 tane değer bulunmakta tek tek almak için 0 yazan yere hangi değeri
-				almak istiyorsan onu yazarız örneğin sadece mahalle isimlerini almak istiyorsak
-				print_r($row[4])  ->>Buda sadece mahalle değerini verecektir. 
-			*/
-			/*aşağıda bulunan sql kodu ise veri tabanına ekleme yapacaktır.*/
-			$IL_ADI =print_r($row[0]); //il Adını aldım
-			$ILCE_ADI =print_r($row[1]); //ilce adı
-			$MAHALLE  =print_r($row[2]); //mahalle adını aldım.
-			$POSTAKODU =print_r($row[3]); //posta kodunu aldım. ü
-			
-			/*Döngü içerisinde olduğu için her döndüğünde sql tablosuna veri ekleyecek.*/
-			$Ekle=mysql_query("INSERT INTO ILLER_TABLOSU SET IL='$IL_ADI' , Ilce='$ILCE_ADI', SEMT='$MAHALLE', PostaKodu='$POSTAKODU'") or die("Ekleme yaparken hata oluştu."); 
-		}
-		
-    }
-    
-  
+				print_r($row); /*Sadece Hamur ilcesine ait bilgiler gelir.*/
+ $IL_ADI =print_r($row[0]); 
+ $ILCE_ADI =print_r($row[1]); 
+ $MAHALLE  =print_r($row[2]); 
+ $POSTAKODU =print_r($row[3]); 
+ $Ekle=mysql_query("INSERT INTO ILLER_TABLOSU SET IL='$IL_ADI' , Ilce='$ILCE_ADI', SEMT='$MAHALLE', PostaKodu='$POSTAKODU'") or die("Ekleme yaparken hata oluştu."); 
+		}		
+    }      
 ?>
